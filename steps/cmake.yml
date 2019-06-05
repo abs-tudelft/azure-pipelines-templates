@@ -1,0 +1,16 @@
+parameters:
+  source: '.'
+
+steps:
+
+- script: |
+    cmake ${{ parameters.source }}
+  displayName: CMake
+
+- script: |
+    make -j
+  displayName: Build
+
+- script: |
+    make test
+  displayName: Test
