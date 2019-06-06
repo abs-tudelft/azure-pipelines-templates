@@ -1,0 +1,14 @@
+parameters:
+  python: '3.7'
+  packages: []
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: ${{ parameters.python }}
+  displayName: Use Python ${{ parameters.python }}
+
+- script: |
+    pip3 install ${{ join(' ', parameters.packages) }}
+  displayName: Install Python packages

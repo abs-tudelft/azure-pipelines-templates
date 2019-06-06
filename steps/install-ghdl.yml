@@ -1,0 +1,18 @@
+parameters:
+  version: 0.36
+
+steps:
+
+- script: |
+    curl -L https://github.com/ghdl/ghdl/archive/v${{ parameters.version }}.tar.gz | tar xz
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Download ghdl (${{ parameters.version }})
+
+- script: |
+    sudo apt-get update && sudo apt-get install -y gnat-4.9
+  displayName: Install ghdl dependencies
+
+- script: |
+    cd ghdl-${{ parameters.version }} && ./configure && make -j && sudo make install
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use ghdl (${{ parameters.version }})
