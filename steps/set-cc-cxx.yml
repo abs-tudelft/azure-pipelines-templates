@@ -1,0 +1,13 @@
+parameters:
+  cc: gcc-7
+  cxx: g++-7
+
+steps:
+
+- script: |
+    echo "##vso[task.setvariable variable=CC;]${{ parameters.cc }}"
+  displayName: Use CC (${{ parameters.cc }})
+
+- script: |
+    echo "##vso[task.setvariable variable=CXX;]${{ parameters.cxx }}"
+  displayName: Use CXX (${{ parameters.cxx }})
