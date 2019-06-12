@@ -1,0 +1,19 @@
+parameters:
+  version: 0.13
+  arch: amd64
+  os: ubuntu
+
+steps:
+
+- script: |
+    curl -sSL "https://dist.apache.org/repos/dist/dev/arrow/KEYS" | sudo -E apt-key add - &&
+    echo "deb [arch=${{ parameters.arch }}] https://dl.bintray.com/apache/arrow/${{ parameters.os }}/ $(lsb_release --codename --short) main" | sudo tee -a /etc/apt/sources.list &&
+    sudo apt-get update &&
+    sudo apt-get install -y libarrow-dev=${{ parameters.version }}-1
+  condition: eq(variables['Agent.OS'], 'Linux')
+  displayName: Use Arrow (${{ parameters.version }}) (Linux)
+
+- script: |
+    brew install apache-arrow
+  condition: eq(variables['Agent.OS'], 'Darwin')
+  displayName: Use Arrow (stable) (macOS)
