@@ -1,10 +1,11 @@
 parameters:
   source: '.'
+  args: ''
 
 steps:
 
 - script: |
-    cmake ${{ parameters.source }}
+    cmake ${{ parameters.args }} ${{ parameters.source }}
   displayName: CMake
 
 - script: |
