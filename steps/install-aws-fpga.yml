@@ -1,0 +1,12 @@
+parameters:
+  version: 1.4.8
+
+steps:
+
+- script: |
+    git clone --single-branch --depth 1 --branch v${{ parameters.version }} https://github.com/aws/aws-fpga &&
+    cd aws-fpga &&
+    source sdk_setup.sh &&
+    echo "##vso[task.setvariable variable=SDK_DIR;]$(Agent.HomeDirectory)/aws-fpga/sdk"
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use aws-fpga (${{ parameters.version }})

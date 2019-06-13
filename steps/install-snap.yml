@@ -1,0 +1,19 @@
+parameters:
+  snapVersion: 1.5.1
+  pslseVersion: 4.1
+  pslVersion: 8
+
+steps:
+
+- script: |
+    git clone --single-branch --depth 1 --branch v${{ parameters.pslseVersion }} https://github.com/ibm-capi/pslse &&
+    echo "##vso[task.setvariable variable=PSLSE_ROOT;]$(Agent.HomeDirectory)/pslse"
+  displayName: Use pslse (${{ parameters.pslseVersion }})
+
+- script: |
+    git clone --single-branch --depth 1 --branch v${{ parameters.snapVersion }} https://github.com/open-power/snap &&
+    echo "##vso[task.setvariable variable=SNAP_ROOT;]$(Agent.HomeDirectory)/snap" &&
+    cd snap &&
+    BUILD_SIMCODE=1 PSLVER=${{ parameters.pslVersion }} make software
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use snap (${{ parameters.snapVersion }})
