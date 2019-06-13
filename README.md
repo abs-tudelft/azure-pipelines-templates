@@ -16,7 +16,7 @@ resources:
   - repository: abs-tudelft
     type: github
     endpoint: github
-    name: abs-tudelft/azure-pipelines-template
+    name: abs-tudelft/azure-pipelines-templates
 ```
 
 Include job or step templates using the `@abs-tudelft` suffix.
