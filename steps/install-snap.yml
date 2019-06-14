@@ -8,6 +8,7 @@ steps:
 - script: |
     git clone --single-branch --depth 1 --branch v${{ parameters.pslseVersion }} https://github.com/ibm-capi/pslse &&
     echo "##vso[task.setvariable variable=PSLSE_ROOT;]$(Agent.HomeDirectory)/pslse"
+  workingDirectory: $(Agent.HomeDirectory)
   displayName: Use pslse (${{ parameters.pslseVersion }})
 
 - script: |
