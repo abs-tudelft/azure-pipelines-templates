@@ -10,5 +10,5 @@ steps:
   displayName: Use Python ${{ parameters.python }}
 
 - script: |
-    pip3 install ${{ join(' ', parameters.packages) }}
+    pip3 install setuptools wheel ${{ join(' ', parameters.packages) }}
   displayName: Install Python packages
