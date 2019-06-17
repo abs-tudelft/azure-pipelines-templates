@@ -10,7 +10,7 @@ jobs:
 - job: docs
   pool:
     vmImage: ubuntu-latest
-  condition: eq(variables['Build.SourceBranch'], ${{ parameters.ref }})
+  condition: eq(variables['Build.SourceBranch'], '${{ parameters.ref }}')
   steps:
   - checkout: self
     persistCredentials: true
