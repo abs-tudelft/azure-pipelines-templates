@@ -1,19 +1,32 @@
 parameters:
   source: docs
-  name: 'Azure Pipelines'
-  email: 'azuredevops@microsoft.com'
+  output: docs/book
+  remote: origin
+  ref: refs/heads/master
   branch: 'gh-pages'
 
 jobs:
 
 - job: docs
+  pool:
+    vmImage: ubuntu-latest
+  condition: eq(variables['Build.SourceBranch'], ${{ parameters.ref }})
   steps:
+  - checkout: self
+    persistCredentials: true
   - script: |
-      git config --local user.name ${{ parameters.name }}
-      git config --local user.email ${{ parameters.email }}
+      git config --local user.name "$BUILD_REQUESTEDFOR"
+      git config --local user.email "$BUILD_REQUESTEDFOREMAIL"
     displayName: Configure git
   - template: ../steps/install-mdbook.yml
   - script: |
       mdbook build
     displayName: mdBook build
     workingDirectory: $(Build.SourcesDirectory)/${{ parameters.source }}
+  - script: |
+      git add -f ${{ parameters.output }}
+      git commit -m "Deploy docs for $(Build.SourceVersion)"
+      git subtree split --prefix ${{ parameters.output }} -b ${{ parameters.branch }}
+      git push -f ${{ parameters.remote }} ${{ parameters.branch }}:${{ parameters.branch }}
+    workingDirectory: $(Build.SourcesDirectory)
+    displayName: GitHub Pages
