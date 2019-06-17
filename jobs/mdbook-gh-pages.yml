@@ -1,0 +1,19 @@
+parameters:
+  source: docs
+  name: 'Azure Pipelines'
+  email: 'azuredevops@microsoft.com'
+  branch: 'gh-pages'
+
+jobs:
+
+- job: docs
+  steps:
+  - script: |
+      git config --local user.name ${{ parameters.name }}
+      git config --local user.email ${{ parameters.email }}
+    displayName: Configure git
+  - template: ../steps/install-mdbook.yml
+  - script: |
+      mdbook build
+    displayName: mdBook build
+    workingDirectory: $(Build.SourcesDirectory)/${{ parameters.source }}
