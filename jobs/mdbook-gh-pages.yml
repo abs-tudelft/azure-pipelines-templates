@@ -14,10 +14,6 @@ jobs:
   steps:
   - checkout: self
     persistCredentials: true
-  - script: |
-      git config --local user.name "$BUILD_REQUESTEDFOR"
-      git config --local user.email "$BUILD_REQUESTEDFOREMAIL"
-    displayName: Configure git
   - template: ../steps/install-mdbook.yml
   - script: |
       mdbook build
