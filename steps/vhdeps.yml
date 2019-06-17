@@ -1,9 +1,10 @@
 parameters:
   sources: ['.']
+  args: ''
   simulator: 'ghdl'
 
 steps:
 
 - script: |
-    vhdeps --stacktrace -i ${{ join(' -i', parameters.sources) }} ${{ parameters.simulator }}
+    vhdeps --stacktrace -i ${{ join(' -i', parameters.sources) }} ${{ parameters.simulator }} -- ${{ parameters.args }}
   displayName: vhdeps (${{ parameters.simulator }})
