@@ -1,11 +1,14 @@
 parameters:
   source: '.'
   args: ''
+  CXXFLAGS: '-Wall -Werror'
 
 steps:
 
 - script: |
     cmake ${{ parameters.args }} ${{ parameters.source }}
+  env:
+    CXXFLAGS: ${{ parameters.CXXFLAGS }}
   displayName: CMake
 
 - script: |
