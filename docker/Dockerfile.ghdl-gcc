@@ -1,0 +1,46 @@
+FROM debian:buster-slim
+
+ARG GHDL_VERSION=v0.36
+ARG GCC_VERSION=8.3.0
+
+RUN apt-get update -qq && apt-get install -y \
+      curl \
+      make \
+      autoconf \
+      flex \
+      quilt \
+      gnat \
+      g++ \
+      zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /ghdl-srcs/build && \
+    curl -L https://github.com/ghdl/ghdl/archive/${GHDL_VERSION}.tar.gz | tar -xz -C /ghdl-srcs --strip-components=1 && \
+    mkdir -p /gcc-srcs && \
+    curl -L https://github.com/gcc-mirror/gcc/archive/gcc-$(echo ${GCC_VERSION} | sed -e 's/\./_/g')-release.tar.gz | tar -xz -C /gcc-srcs --strip-components=1 && \
+    cd /gcc-srcs && \
+    ./contrib/download_prerequisites && \
+    cd /ghdl-srcs/build && \
+    ../configure \
+      --with-gcc=/gcc-srcs \
+      --prefix=/opt/ghdl && \
+    make copy-sources && \
+    mkdir gcc-objs && \
+    cd gcc-objs && \
+    /gcc-srcs/configure \
+      --prefix=/opt/ghdl \
+      --enable-languages=c,vhdl \
+      --disable-bootstrap \
+      --disable-lto \
+      --disable-multilib \
+      --disable-libssp \
+      --disable-libgomp \
+      --disable-libquadmath \
+      "`gcc -v 2>&1 | grep -o -- --enable-default-pie`" && \
+    make -j4 && \
+    make install MAKEINFO=true && \
+    cd /ghdl-srcs/build && \
+    make ghdllib && \
+    make install && \
+    rm -rf /gcc-srcs /ghdl-srcs
+
+ENV PATH=$PATH:/opt/ghdl/bin
