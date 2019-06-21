@@ -3,6 +3,8 @@ parameters:
   version: latest
   sources: ['.']
   args: []
+  preSteps: []
+  postSteps: []
 
 jobs:
 
@@ -11,6 +13,7 @@ jobs:
     vmImage: ubuntu-latest
   container: abstudelft/vhdeps:${{ parameters.version }}
   steps:
+  - ${{ parameters.preSteps }}
   - script: |
       pip3 install --user gcovr
     displayName: Install gcovr
@@ -32,3 +35,4 @@ jobs:
     env:
       CODECOV_TOKEN: $(codecov)
     displayName: codecov
+  - ${{ parameters.postSteps }}
