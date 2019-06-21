@@ -1,11 +1,12 @@
 parameters:
+  name: 'vhdeps'
   version: latest
   sources: ['.']
   args: []
 
 jobs:
 
-- job: vhdeps
+- job: ${{ parameters.name }}
   pool:
     vmImage: ubuntu-latest
   container: abstudelft/vhdeps:${{ parameters.version }}
