@@ -1,0 +1,30 @@
+parameters:
+  version: latest
+  sources: ['.']
+  args: []
+
+jobs:
+
+- job: vhdeps
+  pool:
+    vmImage: ubuntu-latest
+  container: abstudelft/vhdeps:${{ parameters.version }}
+  steps:
+  - script: |
+      pip3 install --user gcovr
+    displayName: Install gcovr
+  - script: |
+      vhdeps -i ${{ join(' -i', parameters.sources) }} ghdl -- ${{ join(' ', parameters.args) }} -c gcov
+    displayName: vhdeps
+  - script: |
+      python3 -m gcovr -r . -x
+    displayName: Generate Cobertura
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+  - script: |
+      bash <(curl https://codecov.io/bash) -f coverage.xml
+    env:
+      CODECOV_TOKEN: $(codecov)
+    displayName: codecov
