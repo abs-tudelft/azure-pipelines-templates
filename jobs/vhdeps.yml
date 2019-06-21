@@ -13,6 +13,9 @@ jobs:
   - script: |
       pip3 install --user gcovr
     displayName: Install gcovr
+  - task: UseDotNet@2
+    inputs:
+      version: 2.x
   - script: |
       vhdeps -i ${{ join(' -i', parameters.sources) }} ghdl -- ${{ join(' ', parameters.args) }} -c gcov
     displayName: vhdeps
