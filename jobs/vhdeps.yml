@@ -17,7 +17,7 @@ jobs:
       vhdeps -i ${{ join(' -i', parameters.sources) }} ghdl -- ${{ join(' ', parameters.args) }} -c gcov
     displayName: vhdeps
   - script: |
-      python3 -m gcovr -r . -x
+      python3 -m gcovr -r . -x -o coverage.xml
     displayName: Generate Cobertura
   - task: PublishCodeCoverageResults@1
     inputs:
