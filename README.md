@@ -29,5 +29,5 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - template: steps/some-step-template.hml@abs-tudelft
+  - template: steps/some-step-template.yml@abs-tudelft
 ```
