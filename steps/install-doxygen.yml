@@ -1,0 +1,12 @@
+parameters:
+  version: 1.8.15
+
+steps:
+
+- script: |
+    curl -L http://doxygen.nl/files/doxygen-${{ parameters.version }}.linux.bin.tar.gz | tar xz -C $HOME
+  displayName: Download Doxygen (${{ parameters.version }})
+
+- script: |
+    echo "##vso[task.prependpath]$HOME/doxygen-${{ parameters.version }}/bin"
+  displayName: Use Doxygen (${{ parameters.version }})
