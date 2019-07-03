@@ -4,6 +4,9 @@ parameters:
   remote: origin
   ref: refs/heads/master
   branch: 'gh-pages'
+  preSteps: []
+  beforePublishSteps: []
+  postSteps: []
 
 jobs:
 
@@ -12,6 +15,7 @@ jobs:
     vmImage: ubuntu-latest
   condition: eq(variables['Build.SourceBranch'], '${{ parameters.ref }}')
   steps:
+  - ${{ parameters.preSteps }}
   - checkout: self
     persistCredentials: true
   - script: |
@@ -23,6 +27,7 @@ jobs:
       mdbook build
     displayName: mdBook build
     workingDirectory: $(Build.SourcesDirectory)/${{ parameters.source }}
+  - ${{ parameters.beforePublishSteps }}
   - script: |
       git add -f ${{ parameters.output }}
       git commit -m "Deploy docs for $(Build.SourceVersion)"
@@ -30,3 +35,4 @@ jobs:
       git push -f ${{ parameters.remote }} ${{ parameters.branch }}:${{ parameters.branch }}
     workingDirectory: $(Build.SourcesDirectory)
     displayName: GitHub Pages
+  - ${{ parameters.postSteps }}
