@@ -15,9 +15,9 @@ jobs:
     vmImage: ubuntu-latest
   condition: eq(variables['Build.SourceBranch'], '${{ parameters.ref }}')
   steps:
-  - ${{ parameters.preSteps }}
   - checkout: self
     persistCredentials: true
+  - ${{ parameters.preSteps }}
   - script: |
       git config --local user.name "$BUILD_REQUESTEDFOR"
       git config --local user.email "$BUILD_REQUESTEDFOREMAIL"
