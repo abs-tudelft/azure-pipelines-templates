@@ -10,3 +10,7 @@ steps:
 - script: |
     echo "##vso[task.prependpath]$HOME/doxygen-${{ parameters.version }}/bin"
   displayName: Use Doxygen (${{ parameters.version }})
+
+- script: |
+    sudo apt-get update && sudo apt-get install -y graphviz
+  displayName: Install graphviz
