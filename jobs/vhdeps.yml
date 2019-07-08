@@ -14,18 +14,12 @@ jobs:
   container: abstudelft/vhdeps:${{ parameters.version }}
   steps:
   - ${{ parameters.preSteps }}
-  - script: |
-      pip3 install --user gcovr
-    displayName: Install gcovr
   - task: UseDotNet@2
     inputs:
       version: 2.x
   - script: |
-      vhdeps -i ${{ join(' -i', parameters.sources) }} ghdl -- ${{ join(' ', parameters.args) }} -c gcov
+      vhdeps -i ${{ join(' -i', parameters.sources) }} ghdl -- ${{ join(' ', parameters.args) }} -c xml -d .
     displayName: vhdeps
-  - script: |
-      python3 -m gcovr -r . -x -o coverage.xml
-    displayName: Generate Cobertura
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: cobertura
