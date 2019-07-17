@@ -1,0 +1,49 @@
+jobs:
+
+- job: install_arrow
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-arrow.yml
+
+- job: install_aws_fpga
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-aws-fpga.yml
+
+- job: install_cmake
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-cmake.yml
+
+- job: install_doxygen
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-doxygen.yml
+
+- job: install_ghdl
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-ghdl.yml
+
+- job: install_mdbook
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-mdbook.yml
+
+- job: install_python
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-python.yml
+
+- job: install_snap
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-snap.yml
