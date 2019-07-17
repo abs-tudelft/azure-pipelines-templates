@@ -1,0 +1,11 @@
+parameters:
+  version: develop
+  # TODO: add parameters to build + install
+
+steps:
+
+- script: |
+    git clone --single-branch --depth 1 --branch v${{ parameters.version }} https://github.com/abs-tudelft/fletcher &&
+    echo "##vso[task.setvariable variable=FLETCHER_DIR;]$(Agent.HomeDirectory)/fletcher"
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use Fletcher (${{ parameters.version }})

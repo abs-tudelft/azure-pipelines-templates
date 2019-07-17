@@ -24,6 +24,12 @@ jobs:
   steps:
   - template: steps/install-doxygen.yml
 
+- job: install_fletcher
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-fletcher.yml
+
 - job: install_ghdl
   pool:
     vmImage: ubuntu-latest
