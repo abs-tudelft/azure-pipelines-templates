@@ -19,8 +19,8 @@ jobs:
     persistCredentials: true
   - ${{ parameters.preSteps }}
   - script: |
-      git config --local user.name "Azure Pipelines"
-      git config --local user.email "azuredevops@microsoft.com"
+      git config --local user.name "`git log -1 --format='%an'`"
+      git config --local user.email "`git log -1 --format='%ae'`"
     displayName: Configure git
   - template: ../steps/install-mdbook.yml
   - script: |
