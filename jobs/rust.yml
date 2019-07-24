@@ -1,0 +1,37 @@
+parameters:
+  os: ['linux', 'macos']
+  rust: ['stable', 'nightly']
+
+jobs:
+- job:
+  strategy:
+    matrix:
+      ${{ each os in parameters.os }}:
+        ${{ each rust in parameters.rust }}:
+          ${{ format('{0}_{1}', os, rust) }}:
+            rust: ${{ format('{0}', rust) }}
+            ${{ if eq(os, 'linux') }}:
+              image: ubuntu-latest
+            ${{ if eq(os, 'macos') }}:
+              image: macos-latest
+  pool:
+    vmImage: $(image)
+  steps:
+  - template: ../steps/install-rust.yml
+    parameters:
+      rust: $(rust)
+  - template: ../steps/rust.yml
+  - script: |
+      cargo install --debug cargo-tarpaulin
+    displayName: Install cargo-tarpaulin
+    condition: and(eq(variables.rust, 'stable'), eq(variables.os, 'linux'))
+  - script: |
+      cargo tarpaulin -out Xml
+    displayName: Coverage
+    condition: and(eq(variables.rust, 'stable'), eq(variables.os, 'linux'))
+  - script: |
+      bash <(curl -s https://codecov.io/bash)
+    env:
+      CODECOV_TOKEN: $(codecov)
+    displayName: Codecov
+    condition: and(eq(variables.rust, 'stable'), eq(variables.os, 'linux'))
