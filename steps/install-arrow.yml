@@ -9,10 +9,11 @@ steps:
     curl -sSL "https://dist.apache.org/repos/dist/dev/arrow/KEYS" | sudo apt-key add -
     echo "deb [arch=${{ parameters.arch }}] https://dl.bintray.com/apache/arrow/${{ parameters.os }}/ $(lsb_release --codename --short) main" | sudo tee -a /etc/apt/sources.list &&
     sudo apt-get update
-    sudo apt-get install -y libarrow-dev=${{ parameters.version }}-1 
+    sudo apt-get install -y libarrow-dev=${{ parameters.version }}-1
     sudo apt-cache search --names-only 'libarrow*' | cut -f 1 -d ' ' | xargs sudo apt-get download
     sudo apt-cache search --names-only 'libparquet*' | cut -f 1 -d ' ' | xargs sudo apt-get download
     sudo apt-cache search --names-only 'libgandiva*' | cut -f 1 -d ' ' | xargs sudo apt-get download
+    sudo apt-cache search --names-only 'libplasma*' | cut -f 1 -d ' ' | xargs sudo apt-get download
     sudo dpkg --force-all -i *.deb
   condition: eq(variables['Agent.OS'], 'Linux')
   displayName: Use Arrow (${{ parameters.version }}) (Linux) - workaround
