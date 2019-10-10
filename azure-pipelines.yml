@@ -53,3 +53,9 @@ jobs:
     vmImage: ubuntu-latest
   steps:
   - template: steps/install-snap.yml
+
+- job: install_xrt
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-xrt.yml

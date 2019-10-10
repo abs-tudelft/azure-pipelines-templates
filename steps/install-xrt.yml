@@ -1,0 +1,17 @@
+parameters:
+  xrtVersion: 2018.3.3.2
+
+steps:
+
+- script: |
+    mkdir -p /xrt &&
+    curl -L https://github.com/Xilinx/XRT/archive/${{ parameters.xrtVersion }}.tar.gz | tar xz --strip-components=1 -C /xrt &&
+    /xrt/src/runtime_src/tools/scripts/xrtdeps.sh -docker &&
+    /xrt/build/build.sh -j -verbose &&
+    sudo apt install --reinstall /xrt/build/Release/xrt_*-xrt.deb &&
+    echo "##vso[task.setvariable variable=XILINX_XRT;]/opt/xilinx/xrt" &&
+    echo "##vso[task.setvariable variable=LD_LIBRARY_PATH;]$XILINX_XRT/lib:$LD_LIBRARY_PATH" &&
+    echo "##vso[task.prependpath]$XILINX_XRT/bin:$PATH" &&
+    echo "##vso[task.setvariable variable=PYTHONPATH;]$XILINX_XRT/python:$PYTHONPATH"
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use xrt (${{ parameters.xrtVersion }})
