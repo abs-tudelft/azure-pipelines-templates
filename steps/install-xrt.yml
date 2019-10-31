@@ -6,6 +6,7 @@ steps:
 - script: |
     mkdir -p /xrt &&
     curl -L https://github.com/Xilinx/XRT/archive/${{ parameters.xrtVersion }}.tar.gz | tar xz --strip-components=1 -C /xrt &&
+    sudo apt-get update &&
     /xrt/src/runtime_src/tools/scripts/xrtdeps.sh -docker &&
     /xrt/build/build.sh -j -verbose &&
     sudo apt install --reinstall /xrt/build/Release/xrt_*-xrt.deb &&
