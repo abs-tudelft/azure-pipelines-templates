@@ -54,6 +54,12 @@ jobs:
   steps:
   - template: steps/install-snap.yml
 
+- job: install_oc_accel
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - template: steps/install-oc-accel.yml
+
 - job: install_xrt
   pool:
     vmImage: ubuntu-latest

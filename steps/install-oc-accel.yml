@@ -1,0 +1,19 @@
+parameters:
+  ocaccelVersion: master
+  ocseVersion: master
+
+steps:
+
+- script: |
+    git clone --single-branch --depth 1 --branch ${{ parameters.ocseVersion }} https://github.com/OpenCAPI/ocse &&
+    echo "##vso[task.setvariable variable=OCSE_ROOT;]$(Agent.HomeDirectory)/ocse"
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use ocse (${{ parameters.ocseVersion }})
+
+- script: |
+    git clone --recursive --single-branch --depth 1 --branch ${{ parameters.ocaccelVersion }} https://github.com/OpenCAPI/oc-accel &&
+    echo "##vso[task.setvariable variable=SNAP_ROOT;]$(Agent.HomeDirectory)/oc-accel" &&
+    cd oc-accel &&
+    BUILD_SIMCODE=1 make software
+  workingDirectory: $(Agent.HomeDirectory)
+  displayName: Use oc-accel (${{ parameters.ocaccelVersion }})
