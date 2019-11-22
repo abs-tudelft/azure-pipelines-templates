@@ -1,15 +1,13 @@
 parameters:
-  xrtVersion: 2018.3.3.2
+  xrtVersion: 201920.2.3.1301
+  osVersion: 18.04
 
 steps:
 
 - script: |
-    mkdir -p /xrt &&
-    curl -L https://github.com/Xilinx/XRT/archive/${{ parameters.xrtVersion }}.tar.gz | tar xz --strip-components=1 -C /xrt &&
-    sudo apt-get update &&
-    /xrt/src/runtime_src/tools/scripts/xrtdeps.sh -docker &&
-    /xrt/build/build.sh -j -verbose &&
-    sudo apt install --reinstall /xrt/build/Release/xrt_*-xrt.deb &&
+    curl -L https://www.xilinx.com/bin/public/openDownload?filename=xrt_${{ parameters.xrtVersion }}_${{ parameters.osVersion}}-xrt.deb > xrt.deb
+    sudo apt-get install -y ./xrt.deb &&
+    rm -rf xrt.deb &&
     echo "##vso[task.setvariable variable=XILINX_XRT;]/opt/xilinx/xrt" &&
     echo "##vso[task.setvariable variable=LD_LIBRARY_PATH;]$XILINX_XRT/lib:$LD_LIBRARY_PATH" &&
     echo "##vso[task.prependpath]$XILINX_XRT/bin:$PATH" &&

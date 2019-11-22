@@ -62,6 +62,6 @@ jobs:
 
 - job: install_xrt
   pool:
-    vmImage: ubuntu-latest
+    vmImage: ubuntu-18.04
   steps:
   - template: steps/install-xrt.yml
