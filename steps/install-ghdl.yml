@@ -1,5 +1,5 @@
 parameters:
-  version: 0.36
+  version: 0.37
 
 steps:
 
@@ -9,7 +9,7 @@ steps:
   displayName: Download ghdl (${{ parameters.version }})
 
 - script: |
-    sudo apt-get update && sudo apt-get install -y gnat-4.9
+    sudo apt-get update && sudo apt-get install -y gnat
   displayName: Install ghdl dependencies
 
 - script: |
